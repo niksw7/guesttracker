@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guesttracker
+  namespace: hackerspace
+  labels:
+    app: guesttracker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guesttracker
+  template:
+    metadata:
+      # annotations:
+      #   linkerd.io/inject: enabled
+      #   config.linkerd.io/trace-collector: oc-collector.tracing:55678
+      labels:
+        app: guesttracker
+    spec:
+      containers:
+      - name: guesttracker
+        image: guesttracker:1.0
+        ports:
+        - containerPort: 8081
+          name: http
