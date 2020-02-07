@@ -1,11 +1,27 @@
 package main
 import (
-    "fmt"
+	"fmt"
+	"time"
+
+	"contrib.go.opencensus.io/exporter/ocagent"
+	"go.opencensus.io/trace"
 	"net/http"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+
+
+	ocagentHost := "oc-collector.tracing:55678"
+	oce, _ := ocagent.NewExporter(
+		ocagent.WithInsecure(),
+		ocagent.WithReconnectionPeriod(1*time.Second),
+		ocagent.WithAddress(ocagentHost),
+		ocagent.WithServiceName("guesttracker"))
+
+	trace.RegisterExporter(oce)
+	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
+
 	r := gin.Default()
 	r.POST("/track-guest", func(c *gin.Context) {
 		fmt.Println(c.Request.Header)
