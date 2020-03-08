@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: guesttracker
-        image: guesttracker:1.3
+        image: guesttracker:1.11
         ports:
         - containerPort: 8081
           name: http
